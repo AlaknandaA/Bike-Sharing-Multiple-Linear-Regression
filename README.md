@@ -1,6 +1,6 @@
 # Bike-Sharing-Multiple-Linear-Regression
 
-### Problem Statement:
+## Problem Statement:
 
 A bike-sharing system is a service in which bikes are made available for shared use to individuals on a short term basis for a price or free. Many bike share systems allow people to borrow a bike from a "dock" which is usually computer-controlled wherein the user enters the payment information, and the system unlocks it. This bike can then be returned to another dock belonging to the same system.
 
@@ -38,7 +38,7 @@ casual | count of casual users
 registered | count of registered users
 cnt | count of total rental bikes including both casual and registered
 
-### Analysis Methodology
+## Analysis Methodology
 
 **Data Cleaning**
 
@@ -66,12 +66,10 @@ Dummy variables were created for all categorical variables- 'season','mnth','wee
 3. Target variables 'cnt' was popped from the train data to further divide train set into predictor variables and target variable.
 
 
-### Building the model
+## Building the model
 
-**Variance Inflation Factor (VIF)**
-VIF is the metric used to measure the multicollinearity among the independent variables. Usually, a VIF value of greater than 5 is considered too high and leads to a variable being removed from the model.
 
-#### First model
+### First model
 
 1. Used RFE for selecting the top 15 features predicting the target variable, added a constant in the train variables.
 2. Built the first model using the statsmodels for detailed statistics of the model.
@@ -79,13 +77,19 @@ VIF is the metric used to measure the multicollinearity among the independent va
 4. None of the variables have a low enough p-value to get them removed from the model, i.e., they all have p-values below 0.05.
 5. Currently, the first build of our model with 15 variables selected by RFE has two variabels- 'hum', 'temp' with extremely high VIFs. Since 'hum' has a higher VIF than 'temp', I have removed it for the second model.
 
-*What is the difference between R-squared and Adjusted R-squared?*\
-R-squared is the t
+***What is the difference between R-squared and Adjusted R-squared?***\
+R-squared is the a goodness-of-fit measure for linear regression models, in other words, it represents how closely our regression line fits the data. An r-squared value if 100% means that all of our data is explanied by the variables in our model. In more technical terms, it indicates the percentage of the variance in the dependent variable that the independent variables explain collectively.\
+Adjusted R-squared is an improvement on R-squared in that it penalizes the model for addition of new variables that might not increase the goodness-of-fit significantly.\
+R-squared of a model will always increase whenever we add a new variable, whether this new variable is contributing significantly to the regression model or not. In this way, even if we add all the variables from our dataset into the model, R-squared value will reach 100% and our model will explain the entire variance in the data. But this leads to overfitting. A model having 100% R-squared on the train set will not generalize well and perform poorly on the test set. This results in R-squared value of model being high on the train set, but dropping significantly on the test set. To avoid this, we use the Adjusted R-squared metric to measure the goodness-of-fit of a model,
 
-#### Second model
+***Variance Inflation Factor (VIF)***\
+VIF is the metric used to measure the multicollinearity among the independent variables. Usually, a VIF value of greater than 5 is considered too high and leads to a variable being removed from the model.
+
+### Second model
 1. All variables have accceptable p-values.
 2. VIF of 'temp' variable is still higher than 5, though not as high as it was when 'hum' variable was present in the model too.
 3. Removed the 'mnth-Jan' variable since it has the lowest coefficient.
+4. Cannot remove the temp variable from the model because it is an important predictor variable with the highest coefficient of all variables.
 
 *What does it mean when a variable has a low coefficient:* 
 Since we are building a simple linear regression model, which results in a straight line being fitted to the data, the equation of the model is that of a straight line\
@@ -97,6 +101,38 @@ m = coefficients determining the measure by which the predictor variable affects
 c = constant\
 When the coefficient of a predictor variable in the model is low, it means that that variable is not impacting our target variable as much as some of the other predictor variables with higher coefficients. Thus, we can afford to drop this low coefficient predictor variable. This is also the reason we added a constant before fitting the model on our data, because the linear equation has a coefficient.
 
-#### Third model
+### Third model
+1. The variable 'mnth-Feb' p-value shot up to 0.391, which is much higher than our threshold of 0.05. Thus I removed this variable from the model.
+2. All other variables showing satisfactory p-values, coefficients, and VIfs.
+3. Adjusted R-squared value is still good at 82.9%
 
+### Fourth model
+1. Adjusted R-squared value slightly increased to 83%.
+2. All variables having satisfactory p-values and VIFs.
+3. 'mnth_Sept' variable removed as it has the lowest of all coefficients.
 
+### Fifth model
+1. 'mnth_Dec' variables removed from the model since it has lowest coefficient.
+2. All parameters of model normal.
+
+### Sixth model
+1. Adjusted R-squared is at a good 82%.
+2. All other statistics of variables satisfactory.
+3. This is thus the final model I proceeded with. Number of variables in the final model is 10.
+
+### Residual Analysis of error terms in data
+According to the conditions for linear regression:
+1. There must be a linear relationship between the dependent and independent variables.
+2. Error terms of the independent variables must be independent.
+3. The variance of residuals must be constant at different values of the predictor variables.
+4. The error terms should be normally distributed.
+To check whether these conditions are followed, I performed residual analysis of the error terms of independent variables in our dataset, and saw that they were true.
+
+## Evaluation and final prediction based on model
+When scaling the train data, I used this command:\
+df_train[num_vars] = scaler.fit_transform(df_train[num_vars])\
+whereas with the test data, the following command was used:\
+df_test[num_vars] = scaler.transform(df_test[num_vars])\
+The train data is fit and transformed, while the test data is only transformed. This is because the model learns the parameters of scaling on the train data and in the same time scales the train data. We only use transform() on the test data because we use the scaling paramaters learned on the train data to scale the test data.
+
+**After making predictions on the test data using the model trained on the train data, we evaluated our model using the r-squared and adjusted r-squared values of the model on train and test data resp. Adjusted R-squared value of final model on train data was 82.4% while on the test data it was 82.28%. This value is good, and since the r-squared values on train and test data are so similar, it also indicates that the model is neither overtrained neither undertrained on the train data.**
