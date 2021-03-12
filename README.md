@@ -63,4 +63,40 @@ Dummy variables were created for all categorical variables- 'season','mnth','wee
 *Train and test data*
 1. Data was split 70-30 into train and test.
 2. MinMax scaling was applied on the data to bring all variables in data to the same scale. Standard Scaling brings all variables in the range of 0 to +1.
-3. 
+3. Target variables 'cnt' was popped from the train data to further divide train set into predictor variables and target variable.
+
+
+### Building the model
+
+**Variance Inflation Factor (VIF)**
+VIF is the metric used to measure the multicollinearity among the independent variables. Usually, a VIF value of greater than 5 is considered too high and leads to a variable being removed from the model.
+
+#### First model
+
+1. Used RFE for selecting the top 15 features predicting the target variable, added a constant in the train variables.
+2. Built the first model using the statsmodels for detailed statistics of the model.
+3. Already, the model has a good value of both R-squared and Adjusted R-squared at 84.3% and 83.8% resp.
+4. None of the variables have a low enough p-value to get them removed from the model, i.e., they all have p-values below 0.05.
+5. Currently, the first build of our model with 15 variables selected by RFE has two variabels- 'hum', 'temp' with extremely high VIFs. Since 'hum' has a higher VIF than 'temp', I have removed it for the second model.
+
+*What is the difference between R-squared and Adjusted R-squared?*\
+R-squared is the t
+
+#### Second model
+1. All variables have accceptable p-values.
+2. VIF of 'temp' variable is still higher than 5, though not as high as it was when 'hum' variable was present in the model too.
+3. Removed the 'mnth-Jan' variable since it has the lowest coefficient.
+
+*What does it mean when a variable has a low coefficient:* 
+Since we are building a simple linear regression model, which results in a straight line being fitted to the data, the equation of the model is that of a straight line\
+y = mx + c\
+where,
+y = target variable or dependent variable\
+x = predictor variable or independent variable\
+m = coefficients determining the measure by which the predictor variable affects the target variable\
+c = constant\
+When the coefficient of a predictor variable in the model is low, it means that that variable is not impacting our target variable as much as some of the other predictor variables with higher coefficients. Thus, we can afford to drop this low coefficient predictor variable. This is also the reason we added a constant before fitting the model on our data, because the linear equation has a coefficient.
+
+#### Third model
+
+
