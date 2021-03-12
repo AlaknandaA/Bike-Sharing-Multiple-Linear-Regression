@@ -130,9 +130,9 @@ To check whether these conditions are followed, I performed residual analysis of
 
 ## Evaluation and final prediction based on model
 When scaling the train data, I used this command:\
-df_train[num_vars] = scaler.fit_transform(df_train[num_vars])\
+*df_train[num_vars] = scaler.fit_transform(df_train[num_vars])*\
 whereas with the test data, the following command was used:\
-df_test[num_vars] = scaler.transform(df_test[num_vars])\
+*df_test[num_vars] = scaler.transform(df_test[num_vars])*\
 The train data is fit and transformed, while the test data is only transformed. This is because the model learns the parameters of scaling on the train data and in the same time scales the train data. We only use transform() on the test data because we use the scaling paramaters learned on the train data to scale the test data.
 
 **After making predictions on the test data using the model trained on the train data, we evaluated our model using the r-squared and adjusted r-squared values of the model on train and test data resp. Adjusted R-squared value of final model on train data was 82.4% while on the test data it was 82.28%. This value is good, and since the r-squared values on train and test data are so similar, it also indicates that the model is neither overtrained neither undertrained on the train data.**
