@@ -60,7 +60,7 @@ cnt | count of total rental bikes including both casual and registered
 *Creating dummy variables*\
 Dummy variables were created for all categorical variables- 'season','mnth','weekday','weathersit'. drop_first was set to yes as a dummy score of 0 would indicate the first value.
 
-*Train and test data*\
+*Train and test data*
 1. Data was split 70-30 into train and test.
 2. MinMax scaling was applied on the data to bring all variables in data to the same scale. Standard Scaling brings all variables in the range of 0 to +1.
 3. Target variables 'cnt' was popped from the train data to further divide train set into predictor variables and target variable.
