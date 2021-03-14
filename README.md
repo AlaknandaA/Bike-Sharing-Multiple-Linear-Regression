@@ -40,13 +40,13 @@ cnt | count of total rental bikes including both casual and registered
 
 ## Analysis Methodology
 
-**Data Cleaning**
+### Data Cleaning
 
 1. Checked datatypes and nulls in each column- there were no nulls in any column. The datatypes were all correctly assigned too.
 2. Replaced some categorical column values with understandable names.
 3. Removed some variables that were not useful for the analysis(instant, dteday, atemp, casual, registered)
 
-**Univariate and Bivariate Analysis**
+### Univariate and Bivariate Analysis
 
 1. Temp variable is highly correlated with the variables season and month.
 2. Target variable cnt is correlated with month.
@@ -55,12 +55,12 @@ cnt | count of total rental bikes including both casual and registered
 5. weekday was not impacting the target variable cnt significantly. Demand on all weekdays was almost the same. However, on weekends, demand was lesser than on weekdays.
 6. The least bikes were rented when the weather was snow and rainy. The most bikes were rented in summmer and fall on clear days.
 
-**Preparing the data for modelling**
+### Preparing the data for modelling
 
 *Creating dummy variables*\
 Dummy variables were created for all categorical variables- 'season','mnth','weekday','weathersit'. drop_first was set to yes as a dummy score of 0 would indicate the first value.
 
-*Train and test data*
+*Train and test data*\
 1. Data was split 70-30 into train and test.
 2. MinMax scaling was applied on the data to bring all variables in data to the same scale. Standard Scaling brings all variables in the range of 0 to +1.
 3. Target variables 'cnt' was popped from the train data to further divide train set into predictor variables and target variable.
